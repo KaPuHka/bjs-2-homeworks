@@ -1,4 +1,4 @@
-console.log(compareArrays([2, 2, 2], [2, 2, 2]))
+console.log(compareArrays([2, 7, 2], [2, 7, 2]))
 console.log(compareArrays([1], [1, 2, 3]))
 console.log(compareArrays([1, 2, 3], [1]))
 console.log(advancedFilter([-10, 12, -12, -3]))
