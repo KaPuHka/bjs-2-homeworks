@@ -14,7 +14,7 @@ class PrintEditionItem {
     }
 
     set state(value) {
-        this._state = Math.min(100, value);
+        this._state = Math.min(100, Math.max(10,value));
     }
 
     get state() {
@@ -83,13 +83,14 @@ class Library {
         let book = this.findBookBy('name',bookName);
         if (book !== null) {
             const index = this.books.indexOf(book);
-            if (index > -1) { // when book is found
-                this.books.splice(index, 1); // remove only one book
-            }
-            return book;
+            this.books.splice(index, 1); // remove only one book
         }
+        return book;
     }
 }
+
+// task 3
+
 
 
 
