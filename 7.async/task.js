@@ -55,3 +55,14 @@ class AlarmClock {
 
 
 }
+
+
+// test
+function testcase() {
+    let alarm = new AlarmClock();
+    alarm.addClock("06:05", () => console.log("подъём!"),1 );
+    alarm.addClock("06:07", () => console.log("подъём!!!"),2 );
+    alarm.addClock("06:10", () => console.log("кто спит - того убьём!"),3 );
+    alarm.printAlarms();
+}
+
