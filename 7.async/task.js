@@ -26,20 +26,29 @@ class AlarmClock {
         let currentDate = new Date();
         let h = currentDate.getHours() < 10 ? '0'+currentDate.getHours() : currentDate.getHours();
         let min = currentDate.getMinutes() < 10 ? '0'+currentDate.getMinutes() : currentDate.getMinutes();
+        console.log('time now', h+':'+min);
         return h+':'+min;
     }
 
     start() {
+        let me = this;
         function checkClock(alarm) {
-            if (alarm.time === this.getCurrentFormattedTime())
+            if (alarm.time === me.getCurrentFormattedTime())
                 alarm.callback();
         }
-
-
+        return new Promise(function (resolve, reject) {
+            
+            me.alarmCollection.forEach(alarm => {
+                if (me.timerId === null){
+                    resolve(setInterval( checkClock, 60000, alarm));
+                };   
+            });   
+        });
     }
 
     stop() {
-
+        clearInterval(this.timerId);
+        this.timerId = null;
     }
 
     printAlarms() {
@@ -52,18 +61,23 @@ class AlarmClock {
         this.stop();
         this.alarmCollection = [];
     }
-
-
 }
 
+// https://ru.stackoverflow.com/questions/554290/
+// https://github.com/KaPuHka/bjs-2-homeworks/tree/main/7.async
 
 // test
 function testcase() {
     let alarm = new AlarmClock();
-    alarm.addClock("06:05", () => console.log("подъём!"),1 );
+    alarm.addClock("06:40", () => console.log("подъём!"),1 );
     
-    alarm.addClock("06:07", () => console.log("подъём!!!"),2 );
-    alarm.addClock("06:10", () => console.log("кто спит - того убьём!"),3 );
+    alarm.addClock("06:44", () => console.log("подъём!!!"),2 );
+    alarm.addClock("06:45", () => console.log("кто спит - того убьём!"),3 );
     alarm.printAlarms();
+    alarm.start();
+
+  //  alarm.stop();
+  //  alarm.clearAlarms();
+   // alarm.printAlarms();
 }
 
