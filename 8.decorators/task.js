@@ -26,24 +26,42 @@ function cachingDecoratorNew(func) {
 
 function debounceDecoratorNew(func, ms, first = true) {
   let timerId;
-  this.first = first;
+  let me = this;
+  me.first = first;
   
   return function (...args) {  
-      if (first) {
-        func.apply(this, args);
-        first = false;
+      if (me.first) {
+        func.apply(me, args);
+        me.first = false;
       } else {
         clearTimeout(timerId);
         timerId = setTimeout(() => {
-          func.apply(this, args);
-          console.timeEnd("time"); 
+          func.apply(me, args);
         }, ms);
       }
       
   };
 }
 
-function debounceDecorator2(func, ms) {
+function debounceDecorator2(func, ms, first = true) {
+  let timerId;
+  let me = this;
+  me.first = first;
+  wrapper.count = 0;
+
+  function wrapper(...args) {
+    wrapper.count++;
+    if (me.first) {
+      func.apply(me, args);
+      me.first = false;
+    } else {
+      clearTimeout(timerId);
+      timerId = setTimeout(() => {
+        func.apply(me, args);
+      }, ms);
+    }
+    console.log(wrapper.count);
+  }
   
-    
+  return wrapper;
 }
