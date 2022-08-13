@@ -26,24 +26,24 @@ class AlarmClock {
         let currentDate = new Date();
         let h = currentDate.getHours() < 10 ? '0'+currentDate.getHours() : currentDate.getHours();
         let min = currentDate.getMinutes() < 10 ? '0'+currentDate.getMinutes() : currentDate.getMinutes();
-        console.log('time now', h+':'+min);
+        // console.log('time now', h+':'+min);
         return h+':'+min;
     }
 
     start() {
         let me = this;
         function checkClock(alarm) {
-            if (alarm.time === me.getCurrentFormattedTime())
-                alarm.callback();
-        }
-        return new Promise(function (resolve, reject) {
             
-            me.alarmCollection.forEach(alarm => {
-                if (me.timerId === null){
-                    resolve(setInterval( checkClock, 60000, alarm));
-                };   
-            });   
-        });
+                if (alarm.time === me.getCurrentFormattedTime())
+                    alarm.callback();
+               
+        }
+
+        if (me.timerId === null){
+            me.timerId = setInterval( (Array) => 
+            Array.forEach(alarm => { 
+                checkClock(alarm)}), 60000, me.alarmCollection);
+        }
     }
 
     stop() {
@@ -52,8 +52,9 @@ class AlarmClock {
     }
 
     printAlarms() {
+        console.log('активныe будильники :');
         this.alarmCollection.forEach( alarm => {
-            console.log(alarm.id + ' зазвонит в ' + alarm.time);
+            console.log(alarm.id + '-й будильник зазвонит в ' + alarm.time);
         });
     }
     
@@ -63,21 +64,24 @@ class AlarmClock {
     }
 }
 
-// https://ru.stackoverflow.com/questions/554290/
-// https://github.com/KaPuHka/bjs-2-homeworks/tree/main/7.async
 
 // test
 function testcase() {
     let alarm = new AlarmClock();
-    alarm.addClock("06:40", () => console.log("подъём!"),1 );
+    alarm.addClock("16:28", () => console.log("подъём!"),1 );
     
-    alarm.addClock("06:44", () => console.log("подъём!!!"),2 );
-    alarm.addClock("06:45", () => console.log("кто спит - того убьём!"),3 );
+    alarm.addClock("16:29", () => console.log("подъём!!!"),2 );
+    alarm.addClock("16:30", () => console.log("кто спит - того убьём!"),3 );
     alarm.printAlarms();
     alarm.start();
 
-  //  alarm.stop();
-  //  alarm.clearAlarms();
-   // alarm.printAlarms();
+    function enough(){
+        alarm.stop();
+        alarm.clearAlarms();
+        alarm.printAlarms();
+    } 
+
+    
+    setTimeout(enough, 200000);
 }
 
